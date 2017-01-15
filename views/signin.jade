@@ -1,0 +1,26 @@
+﻿extends layout
+
+block content   
+	.row
+		.col-lg-12
+			h1.page-header= title
+
+	.row
+		if (typeof error != 'undefined' && error)
+			.alert.alert-danger(role='alert')
+				a.alert-link(href='#') #{message}
+		else if(typeof error != 'undefined' && !error)
+			.alert.alert-success(role='alert')
+				a.alert-link(href='#') #{message}
+		form(action='/signin',method='post').form-horizontal
+			.form-group
+				label.col-sm-2.control-label(for='inputEmail') Email
+				.col-sm-10
+					input#inputEmail.form-control(type='text', placeholder='Email', name='email')
+			.form-group
+				label.col-sm-2.control-label(for='inputPassword') Lösenord
+				.col-sm-10
+					input#inputPassword.form-control(type='password', placeholder='Lösenord', name='password')
+			.form-group
+				.col-sm-offset-2.col-sm-10
+					button.btn.btn-default(type='submit') Logga in

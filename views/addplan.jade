@@ -1,0 +1,40 @@
+﻿extends layout
+
+block content   
+	.row
+		.col-lg-12
+			h1.page-header= title
+			p Welcome to #{message}
+
+	.row
+		if (typeof error != 'undefined' && error)
+			.alert.alert-danger(role='alert')
+				a.alert-link(href='#') #{message}
+		else if(typeof error != 'undefined' && !error)
+			.alert.alert-success(role='alert')
+				a.alert-link(href='#') #{message}
+
+		form(action='/addplan',method='post').form-horizontal
+			.form-group
+				label.col-sm-2.control-label(for='inputName') Namn
+				.col-sm-10
+					input#inputName.form-control(type='text', placeholder='Namn', name='name')
+			.form-group
+				label.col-sm-2.control-label(for='inputLastName') Efternamn
+				.col-sm-10
+					input#inputLastName.form-control(type='text', placeholder='Efternamn', name='lastname')
+			.form-group
+				label.col-sm-2.control-label(for='inputPersonNumber') Personnummer 
+				.col-sm-10
+					input#inputPersonNumber.form-control(type='text', placeholder='Personnummer (XXXXXXXX-XXXX)', name='personnumber')
+			.form-group
+				label.col-sm-2.control-label(for='inputDayActivity') Daglig Aktivitet
+				.col-sm-10
+					input#inputDayActivity.form-control(type='number', placeholder='Daglig Aktivitet (X ggr /dag)', name='dailyactivity')
+			.form-group
+				label.col-sm-2.control-label(for='inputDayActivity') Daglig Blodtryckstag
+				.col-sm-10
+					input#inputDayActivity.form-control(type='number', placeholder='Daglig Blodtryckstag (X ggr /dag)', name='dailybloodpressuretake')
+			.form-group
+				.col-sm-offset-2.col-sm-10
+					button.btn.btn-default(type='submit') Spara

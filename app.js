@@ -30,6 +30,8 @@ app.use('/bower_components', express.static(__dirname + '/bower_components'));
 //Map the routes
 controllers.init(app);
 
+module.exports = app;
+
 //var server = http.createServer(app);
 
 //server.listen(6262);// listen for webserver

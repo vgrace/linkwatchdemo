@@ -30,9 +30,9 @@ app.use('/bower_components', express.static(__dirname + '/bower_components'));
 //Map the routes
 controllers.init(app);
 
-var server = http.createServer(app);
+//var server = http.createServer(app);
 
-server.listen(6262);// listen for webserver
+//server.listen(6262);// listen for webserver
 
 //app.listen(6262, function () {
 //    console.log('Example app listening on port 6262!')

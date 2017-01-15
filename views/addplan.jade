@@ -4,7 +4,6 @@ block content
 	.row
 		.col-lg-12
 			h1.page-header= title
-			p Welcome to #{message}
 
 	.row
 		if (typeof error != 'undefined' && error)
@@ -30,11 +29,11 @@ block content
 			.form-group
 				label.col-sm-2.control-label(for='inputDayActivity') Daglig Aktivitet
 				.col-sm-10
-					input#inputDayActivity.form-control(type='number', placeholder='Daglig Aktivitet (X ggr /dag)', name='dailyactivity')
+					input#inputDayActivity.form-control(type='number', placeholder='Antal steg / dag', name='dailyactivity')
 			.form-group
-				label.col-sm-2.control-label(for='inputDayActivity') Daglig Blodtryckstag
+				label.col-sm-2.control-label(for='inputDayActivity') Daglig Blodtryckstagning
 				.col-sm-10
-					input#inputDayActivity.form-control(type='number', placeholder='Daglig Blodtryckstag (X ggr /dag)', name='dailybloodpressuretake')
+					input#inputDayActivity.form-control(type='number', placeholder='Antal gånger / dag', name='dailybloodpressuretake')
 			.form-group
 				.col-sm-offset-2.col-sm-10
 					button.btn.btn-default(type='submit') Spara

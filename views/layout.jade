@@ -60,17 +60,18 @@ html
 							a(href='/signin')
 								| Logga in 
 						
-			.navbar-default.sidebar(role='navigation')
-				.sidebar-nav.navbar-collapse
-					ul#side-menu.nav
-						li
-							a(href='/addplan')
-								i.fa.fa-plus.fa-fw
-								|  Ny vårdplan
-						li
-							a(href='#c')
-								i.fa.fa-id-badge.fa-fw
-								|  Patienter
+			if issignedin
+				.navbar-default.sidebar(role='navigation')
+					.sidebar-nav.navbar-collapse
+						ul#side-menu.nav
+							li
+								a(href='/addplan')
+									i.fa.fa-plus.fa-fw
+									|  Ny vårdplan
+							li
+								a(href='#c')
+									i.fa.fa-id-badge.fa-fw
+									|  Patienter
 								
 						
 

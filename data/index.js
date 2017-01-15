@@ -8,7 +8,7 @@
                 next(err);
             }
             else {
-                db.patients.findOne({ fullname: patientFullName.toUpperCase() }, next);
+                db.patients.findOne({ fulname: patientFullName.toUpperCase() }, next);
             }
         });
     }
@@ -22,7 +22,7 @@
                 var fullPatient = {
                     name: patientInfo.name,
                     lastname: patientInfo.lastname,
-                    fullname: patientInfo.name.toUpperCase() + patientInfo.lastname.toUpperCase(),
+                    fulname: patientInfo.name.toUpperCase() + patientInfo.lastname.toUpperCase(),
                     personnumber: patientInfo.personnumber,
                     dailyactivity: patientInfo.dailyactivity,
                     dailybloodpressuretake: patientInfo.dailybloodpressuretake

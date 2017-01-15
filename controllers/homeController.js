@@ -1,5 +1,6 @@
 ﻿(function (homeController) {
     var data = require("../data");
+    var careplan = require("../data/careplan"); 
 
     //This controller is a container for the different request types that are going to happen for the home part of the web page
     homeController.init = function (app) {
@@ -56,20 +57,48 @@
 
         // ADD PLAN
         app.get('/addplan', function (req, res) {
-            res.render('addplan', { title: 'Ny Vårdplanering' }); 
+            console.log(careplan.jsondata.CarePlan.activities.activity[1].when["@period"]);
+            res.render('addplan', { title: 'Ny Vårdplanering', issignedin: true }); 
         });
 
         app.post('/addplan', function (req, res) {
             console.log(req.body);
             data.addPatient(req.body, function (err) {
                 if (err) {
-                    res.render('addplan', { title: 'Ny Vårdplanering', message: 'Planen sparades inte!', error: true });
+                    res.render('addplan', { title: 'Ny Vårdplanering', message: 'Planen sparades inte!', error: true, issignedin: true });
                 }
                 else {
-                    res.render('addplan', { title: 'Ny Vårdplanering', message: 'Planen sparades!', error: false });
+                    res.render('addplan', { title: 'Ny Vårdplanering', message: 'Planen sparades!', error: false, issignedin: true });
                 }
             });
-        })
+        });
+
+        // GET PLAN JSON
+        app.get('/patient/:userfullname/careplan', function (req, res) {
+            
+            //res.send(req.params.userfullname);
+
+            data.getPatient(req.params.userfullname, function (err, patient) {
+                if (err) {
+                    res.send("Patienten hittade inte");
+                }
+                else {
+                    //res.send(patient);
+
+                    // Activity steps
+                    careplan.jsondata.CarePlan.activities.activity[0].stepsRange.min = patient.dailyactivity + "";
+                    careplan.jsondata.CarePlan.activities.activity[0].description = "Walk " + patient.dailyactivity + " steps per day"; 
+
+                    // Bloodpresssure
+                    careplan.jsondata.CarePlan.activities.activity[1].when["@period"] = Math.round( (1440 / parseInt(patient.dailybloodpressuretake)) / 60) + "";
+                    careplan.jsondata.CarePlan.activities.activity[1].when["@periodUnits"] = "hour";
+
+                    res.send(careplan);
+
+                }
+            }); 
+        });
+
     };
 
 }(module.exports));

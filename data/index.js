@@ -2,6 +2,25 @@
     var database = require('./database.js');
 
     // PATIENT
+
+    data.getAllPatients = function (next) {
+        database.getDb(function (err, db) {
+            if (err) {
+                next(err);
+            }
+            else {
+                db.patients.find().toArray(function (err, results) {
+                    if (err) {
+                        next(err, null);
+                    }
+                    else {
+                        next(null, results);
+                    }
+                });
+            }
+        }); 
+    }
+
     data.getPatient = function (patientFullName, next) {
         database.getDb(function (err, db) {
             if (err) {
@@ -28,19 +47,69 @@
                     dailybloodpressuretake: patientInfo.dailybloodpressuretake
                 };
 
-                db.patients.insert(fullPatient, next);
+                db.patients.insert(fullPatient, function (err, patient) {
+                    if (err) {
+                        next(err, null);
+                    }
+                    else {
+                        next(null, patient.ops[0]); 
+                    }
+                });
             }
-        })
+        }); 
     }
 
-    // USER
-    data.getUser = function (userinfo, next) {
+    data.updatePatient = function (patientUpdates, next) {
+        console.log(patientUpdates);
+        console.log("------- IN UPDATE PATIENT"); 
         database.getDb(function (err, db) {
             if (err) {
                 next(err);
             }
             else {
-                db.users.findOne({ email: userinfo.email }, next);
+                db.patients.findOneAndUpdate(
+                    { "fulname": patientUpdates.fullname },
+                    {
+                        $set: {
+                            "name": patientUpdates.name,
+                            "lastname": patientUpdates.lastname,
+                            "personnumber": patientUpdates.personnumber,
+                            "dailyactivity": patientUpdates.dailyactivity,
+                            "dailybloodpressuretake": patientUpdates.dailybloodpressuretake
+                        },
+                        
+                    }, function (err, updatedPatient) {
+                        if (err) {
+                            next(err, null);
+                        }
+                        else {
+                            next(null, updatedPatient.value); 
+                        }
+                    }
+                );
+            }
+        }); 
+    }
+
+    // USER
+    data.getUser = function (userinfo, next) {
+        console.log("IN GET USER"); 
+        database.getDb(function (err, db) {
+            if (err) {
+                next(err);
+            }
+            else {
+                db.users.findOne({ email: userinfo.email }, function (err, user) {
+                    if (err) {
+                        console.log("Error getting user");
+                        next(err, null);
+                    }
+                    else {
+                        console.log("User was found!");
+                        console.log(user);
+                        next(null, user);
+                    }
+                });
             }
         });
     }

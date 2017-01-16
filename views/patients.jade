@@ -1,7 +1,7 @@
 ﻿extends layout
 
 mixin patientItem(patient)
-	a.list-group-item(href='#')
+	a.list-group-item(href='/patient/#{patient.fulname}')
 		h4.list-group-item-heading #{patient.name} #{patient.lastname} (#{patient.personnumber})
 		p.list-group-item-text Daglig aktivitet: #{patient.dailyactivity} steg / dag, daglig blodtryckstagning: #{patient.dailybloodpressuretake} ggr / dag
 
@@ -10,10 +10,13 @@ block content
 		.col-lg-12
 			h1.page-header= title
 	.row
-		.list-group
-			a.list-group-item(href='#')
-				h4.list-group-item-heading Testar Testarsson (19841231-4489)
-				p.list-group-item-text Daglig aktivitet: 3000 steg / dag, daglig blodtryckstagning: var 8e timme
-			a.list-group-item(href='#')
-				h4.list-group-item-heading Theo Hartass - 19841231-4489
-				p.list-group-item-text Daglig aktivitet: 5000 steg / dag, daglig blodtryckstagning: var 30 min
+		if (typeof error != 'undefined' && error)
+			.alert.alert-danger(role='alert')
+				a.alert-link(href='#') #{message}
+		else if(typeof error != 'undefined' && !error)
+			.alert.alert-success(role='alert')
+				a.alert-link(href='#') #{message}
+		if (patients != null)
+			.list-group
+				for patient in patients
+					+patientItem(patient)

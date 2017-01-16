@@ -9,7 +9,9 @@
             //check if signed in
             console.log(req.session.user);
             if (req.session.user != undefined && req.session.user != null) {
-                res.render('index', { title: 'Linkwatch Demo ' + req.session.user, message: 'Hej, du är redan inloggad', issignedin: true });
+                //res.render('index', { title: 'Linkwatch Demo ' + req.session.user, message: 'Hej, du är redan inloggad', issignedin: true });
+                 
+                res.redirect('/patients'); 
             }
             else {
                 res.render('signin', { title: 'Logga in', message: 'Hej!' });
@@ -39,18 +41,27 @@
         app.get('/signin', function (req, res) {
             res.render('signin', { title: 'Logga in', message: 'Hej!' });
         });
+        app.get('/signout', function (req, res) {
+            req.session.user = null;
+            console.log("Signout!"); 
+            res.render('signin', { title: 'Logga in', message: 'Hej!' });
+        });
 
         app.post('/signin', function (req, res) {
             console.log(req.body);
             data.getUser(req.body, function (err, user) {
                 if (err) {
-                    res.render('signin', { title: 'Logga in', message: 'Email eller lösenord stämmer inte', error: true, issignedin: false });
+                    res.render('signin', { title: 'Logga in', message: 'Email eller lösenord stämmer inte ' + err, error: true, issignedin: false });
                 }
                 else {
                     // Save user session
+                    console.log("The user");
                     console.log(user);
                     req.session.user = user.email;
-                    res.render('index', { title: 'Linkwatch Demo' + user.name, message: 'Välkommen, du är nu inloggad!', issignedin: true });
+                    res.redirect('/patients');
+
+                    //res.render('index', { title: 'Linkwatch Demo' + user.name, message: 'Välkommen, du är nu inloggad!', issignedin: true });
+                   
                 }
             })
         });
@@ -63,12 +74,47 @@
 
         app.post('/addplan', function (req, res) {
             console.log(req.body);
-            data.addPatient(req.body, function (err) {
+            data.addPatient(req.body, function (err, patient) {
                 if (err) {
                     res.render('addplan', { title: 'Ny Vårdplanering', message: 'Planen sparades inte!', error: true, issignedin: true });
                 }
                 else {
-                    res.render('addplan', { title: 'Ny Vårdplanering', message: 'Planen sparades!', error: false, issignedin: true });
+                    console.log(patient);
+                    console.log("------------------------------- patient");
+                    res.render('addplan', { title: 'Ny Vårdplanering', message: 'Planen sparades!', error: false, patient:patient, issignedin: true });
+                }
+            });
+        });
+
+        app.post('/updateplan', function (req, res) {
+            //console.log(req.body);
+            //res.send(req.body);
+            
+            data.updatePatient(req.body, function (err, oldPatient) {
+                if (err) {
+                    console.log("error updating plan"); 
+                    res.render('patient', { title: 'Patient: ' + req.body.name + " " + req.body.lastname, message: 'Uppdateringen misslyckades', issignedin: true, patient: null, error: true });
+                }
+                else {
+                    if (oldPatient != null) {
+                        console.log("Update ok");
+                        console.log(oldPatient);
+                        console.log("---------------------------------");
+                        data.getPatient(oldPatient.fulname, function (err, newPatient) {
+                            if (err) {
+                                console.log("Fel vid hämtning av Updated patient!");
+                                res.render('patient', { title: 'Patient: ' + oldPatient.name + " " + oldPatient.lastname, message: 'Vårdplanen uppdaterades, men det var problem med att hämta den uppdaterade vårdplanen', issignedin: true, patient: null, error: true });
+                            }
+                            else {
+                                console.log("Updated patient!");
+                                res.render('patient', { title: 'Patient: ' + newPatient.name + " " + newPatient.lastname, message: 'Vårdplanen uppdaterades', issignedin: true, patient: newPatient, error: false });
+                            }
+                        }); 
+                    }
+                    else {
+                        console.log("Updated patient is null");
+                        res.render('patient', { title: 'Patient: ' + req.body.name + " " + req.body.lastname, message: 'Patienten hittades inte', issignedin: true, patient: null, error: true });
+                    }
                 }
             });
         });
@@ -91,8 +137,8 @@
                         careplan.jsondata.CarePlan.activities.activity[0].description = "Walk " + patient.dailyactivity + " steps per day"; 
 
                         // Bloodpresssure
-                        careplan.jsondata.CarePlan.activities.activity[1].when["@period"] = Math.round( (1440 / parseInt(patient.dailybloodpressuretake)) / 60) + "";
-                        careplan.jsondata.CarePlan.activities.activity[1].when["@periodUnits"] = "hour";
+                        careplan.jsondata.CarePlan.activities.activity[1].when["@period"] = patient.dailybloodpressuretake; //Math.round( (1440 / parseInt(patient.dailybloodpressuretake)) / 60) + "";
+                        careplan.jsondata.CarePlan.activities.activity[1].when["@periodUnits"] = "day";
 
                         res.send(careplan);
                     }
@@ -105,7 +151,32 @@
 
         // PATIENTS
         app.get('/patients', function (req, res) {
-            res.render('patients', { title: 'Patienter', message: '', issignedin: true }); 
+            data.getAllPatients(function (err, patients) {
+                if (err) {
+                    console.log("error getting patients: " + err);
+                    res.render('patients', { title: 'Patienter', message: 'Ett fel inträffade vid hämtning av patienter', issignedin: true, patients: null, error: true });
+                }
+                else {
+                    res.render('patients', { title: 'Patienter', message: '', issignedin: true, patients: patients });
+                }
+            });
+        });
+
+        app.get('/patient/:fullname', function (req, res) {
+            data.getPatient(req.params.fullname, function (err, patient) {
+                if (err) {
+                    res.send("Patienten hittades inte");
+                }
+                else {
+                    if(patient != null){
+                        console.log(patient)
+                        res.render('patient', { title: 'Patient: ' + patient.name + " " + patient.lastname, message: '', issignedin: true, patient: patient });
+                    }
+                    else{
+                        res.render('patient', { title: 'Patient: hittades inte', message: '', issignedin: true, patient: '' });
+                    }
+                }
+            }); 
         }); 
 
     };

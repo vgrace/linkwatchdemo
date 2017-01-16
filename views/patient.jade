@@ -1,0 +1,40 @@
+﻿extends layout
+
+block content   
+	.row
+		.col-lg-12
+			h1.page-header= title
+	.row
+		if (typeof error != 'undefined' && error)
+			.alert.alert-danger(role='alert')
+				a.alert-link(href='#') #{message}
+		else if(typeof error != 'undefined' && !error)
+			.alert.alert-success(role='alert')
+				a.alert-link(href='#') #{message}
+
+		if(patient != null)
+			form(action='/updateplan',method='post').form-horizontal
+				.form-group
+					label.col-sm-2.control-label(for='inputName') Namn
+					.col-sm-10
+						input#inputName.form-control(type='text', placeholder='Namn', name='name', value='#{patient.name}')
+				.form-group
+					label.col-sm-2.control-label(for='inputLastName') Efternamn
+					.col-sm-10
+						input#inputLastName.form-control(type='text', placeholder='Efternamn', name='lastname', value='#{patient.lastname}')
+				.form-group
+					label.col-sm-2.control-label(for='inputPersonNumber') Personnummer 
+					.col-sm-10
+						input#inputPersonNumber.form-control(type='text', placeholder='Personnummer (XXXXXXXX-XXXX)', name='personnumber', value='#{patient.personnumber}')
+				.form-group
+					label.col-sm-2.control-label(for='inputDayActivity') Daglig Aktivitet
+					.col-sm-10
+						input#inputDayActivity.form-control(type='number', placeholder='Antal steg / dag', name='dailyactivity', value='#{patient.dailyactivity}')
+				.form-group
+					label.col-sm-2.control-label(for='inputDayBloodPress') Daglig Blodtryckstagning
+					.col-sm-10
+						input#inputDayBloodPress.form-control(type='number', placeholder='Antal gånger / dag', name='dailybloodpressuretake', value='#{patient.dailybloodpressuretake}')
+				.form-group
+					.col-sm-offset-2.col-sm-10
+						input(type='hidden', name='fullname', value='#{patient.fulname}')
+						button.btn.btn-default(type='submit') Uppdatera vårdplan

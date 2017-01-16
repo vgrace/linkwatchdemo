@@ -8,10 +8,11 @@ block content
 	.row
 		if (typeof error != 'undefined' && error)
 			.alert.alert-danger(role='alert')
-				a.alert-link(href='#') #{message}
+				p #{message}
 		else if(typeof error != 'undefined' && !error)
 			.alert.alert-success(role='alert')
-				a.alert-link(href='#') #{message}
+				p #{message}
+				a.alert-link(href='/patient/#{patient.fulname}') Gå till patient
 
 		form(action='/addplan',method='post').form-horizontal
 			.form-group

@@ -17,7 +17,9 @@ app.use(cookieParser());
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-    secret: 'linkwatchdemo123456789'
+    secret: 'linkwatchdemo123456789',
+    resave: true,
+    saveUninitialized: true
 }))
 app.use(flash()); //requires express-session and cookie-parser
 

@@ -80,24 +80,33 @@
 
             data.getPatient(req.params.userfullname, function (err, patient) {
                 if (err) {
-                    res.send("Patienten hittade inte");
+                    res.send("Patienten hittades inte");
                 }
                 else {
+                    console.log(patient)
                     //res.send(patient);
+                    if (patient != null) {
+                        // Activity steps
+                        careplan.jsondata.CarePlan.activities.activity[0].stepsRange.min = patient.dailyactivity + "";
+                        careplan.jsondata.CarePlan.activities.activity[0].description = "Walk " + patient.dailyactivity + " steps per day"; 
 
-                    // Activity steps
-                    careplan.jsondata.CarePlan.activities.activity[0].stepsRange.min = patient.dailyactivity + "";
-                    careplan.jsondata.CarePlan.activities.activity[0].description = "Walk " + patient.dailyactivity + " steps per day"; 
+                        // Bloodpresssure
+                        careplan.jsondata.CarePlan.activities.activity[1].when["@period"] = Math.round( (1440 / parseInt(patient.dailybloodpressuretake)) / 60) + "";
+                        careplan.jsondata.CarePlan.activities.activity[1].when["@periodUnits"] = "hour";
 
-                    // Bloodpresssure
-                    careplan.jsondata.CarePlan.activities.activity[1].when["@period"] = Math.round( (1440 / parseInt(patient.dailybloodpressuretake)) / 60) + "";
-                    careplan.jsondata.CarePlan.activities.activity[1].when["@periodUnits"] = "hour";
-
-                    res.send(careplan);
-
+                        res.send(careplan);
+                    }
+                    else {
+                        res.send("Patient hittades inte"); 
+                    }
                 }
             }); 
         });
+
+        // PATIENTS
+        app.get('/patients', function (req, res) {
+            res.render('patients', { title: 'Patienter', message: '', issignedin: true }); 
+        }); 
 
     };
 

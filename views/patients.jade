@@ -1,0 +1,19 @@
+﻿extends layout
+
+mixin patientItem(patient)
+	a.list-group-item(href='#')
+		h4.list-group-item-heading #{patient.name} #{patient.lastname} (#{patient.personnumber})
+		p.list-group-item-text Daglig aktivitet: #{patient.dailyactivity} steg / dag, daglig blodtryckstagning: #{patient.dailybloodpressuretake} ggr / dag
+
+block content   
+	.row
+		.col-lg-12
+			h1.page-header= title
+	.row
+		.list-group
+			a.list-group-item(href='#')
+				h4.list-group-item-heading Testar Testarsson (19841231-4489)
+				p.list-group-item-text Daglig aktivitet: 3000 steg / dag, daglig blodtryckstagning: var 8e timme
+			a.list-group-item(href='#')
+				h4.list-group-item-heading Theo Hartass - 19841231-4489
+				p.list-group-item-text Daglig aktivitet: 5000 steg / dag, daglig blodtryckstagning: var 30 min

@@ -12,7 +12,7 @@
             "activities": {
                 "activity": [
                   {
-                      "activityType": "ActivityObservation",
+                      "activityType": "StepsObservation",
                       "description": "Walk 5000 steps per day",
                       "when": {
                           "@period": "",
@@ -47,44 +47,6 @@
                       "device": {
                           "manufacturer": "A&D Medical",
                           "model": "UA-767NFC"
-                      }
-                  },
-                  {
-                      "activityType": "BloodPressureObservation",
-                      "description": "Take Bloodpressure",
-                      "when": {
-                          "@period": "30",
-                          "@periodUnits": "min",
-                          "text": "PCD"
-                      },
-                      "device": {
-                          "manufacturer": "A&D Medical",
-                          "model": "UA-767NFC"
-                      }
-                  },
-                  {
-                      "activityType": "BloodPressureObservation",
-                      "description": "Take Bloodpressure",
-                      "when": {
-                          "@period": "15",
-                          "@periodUnits": "min",
-                          "text": "ACM"
-                      },
-                      "device": {
-                          "manufacturer": "A&D Medical",
-                          "model": "UA-767NFC"
-                      }
-                  },
-                  {
-                      "activityType": "Appointment",
-                      "description": "Discussion on the results of your Blood Pressure Monitoring",
-                      "time": {
-                          "@start": "2016-12-10T09:00:00Z",
-                          "@end": "2016-12-10T11:00:00Z"
-                      },
-                      "location": "Schloss Birlinghoven, Konrad-Adenauer-Straße, 53754 Sankt Augustin",
-                      "attendence": {
-                          "attendee": "Dr Medicus"
                       }
                   }
                 ]

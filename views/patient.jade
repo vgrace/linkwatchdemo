@@ -34,6 +34,13 @@ block content
 					label.col-sm-2.control-label(for='inputDayBloodPress') Daglig Blodtryckstagning
 					.col-sm-10
 						input#inputDayBloodPress.form-control(type='number', placeholder='Antal gånger / dag', name='dailybloodpressuretake', value='#{patient.dailybloodpressuretake}')
+				if(patient.dailymedicinname != null)
+					.form-group
+						label.col-sm-2.control-label(for='inputDayMedicin') Medicinering
+						.col-sm-8
+							input#inputDayMedicin.form-control(type='text', placeholder='Medicin', name='dailymedicinname', value='#{patient.dailymedicinname}')
+						.col-sm-2
+							input#inputNumberMedicin.form-control(type='number', placeholder='Antal gånger / dag', name='dailymedicinamount', value='#{patient.dailymedicinamount}')
 				.form-group
 					.col-sm-offset-2.col-sm-10
 						input(type='hidden', name='fullname', value='#{patient.fulname}')

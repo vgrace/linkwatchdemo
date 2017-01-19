@@ -140,6 +140,12 @@
                         careplan.jsondata.CarePlan.activities.activity[1].when["@period"] = patient.dailybloodpressuretake; //Math.round( (1440 / parseInt(patient.dailybloodpressuretake)) / 60) + "";
                         careplan.jsondata.CarePlan.activities.activity[1].when["@periodUnits"] = "day";
 
+                        //Medicin
+                        if (patient.dailymedicinname != null) {
+                            careplan.jsondata.CarePlan.activities.activity[2].when["@period"] = patient.dailymedicinamount;
+                            careplan.jsondata.CarePlan.activities.activity[2].when.text = patient.dailymedicinname; 
+                        }
+                        
                         res.send(careplan);
                     }
                     else {

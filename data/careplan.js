@@ -48,6 +48,15 @@
                           "manufacturer": "A&D Medical",
                           "model": "UA-767NFC"
                       }
+                  },
+                  {
+                      "activityType": "Medication",
+                      "description": "Ta medicin i samband med mat",
+                      "when": {
+                          "@period": "3",
+                          "@periodUnits": "day",
+                          "text": "Medicin namn"
+                      }
                   }
                 ]
             }

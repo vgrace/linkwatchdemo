@@ -36,5 +36,11 @@ block content
 				.col-sm-10
 					input#inputDayActivity.form-control(type='number', placeholder='Antal gånger / dag', name='dailybloodpressuretake')
 			.form-group
+				label.col-sm-2.control-label(for='inputDayMedicin') Medicinering
+				.col-sm-8
+					input#inputDayMedicin.form-control(type='text', placeholder='Medicin', name='dailymedicinname')
+				.col-sm-2
+					input#inputNumberMedicin.form-control(type='number', placeholder='Antal gånger / dag', name='dailymedicinamount')
+			.form-group
 				.col-sm-offset-2.col-sm-10
 					button.btn.btn-default(type='submit') Spara

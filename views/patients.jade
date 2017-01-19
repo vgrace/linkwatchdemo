@@ -1,9 +1,14 @@
 ﻿extends layout
 
 mixin patientItem(patient)
+	- var patientPlan = "Daglig aktivitet:" + patient.dailyactivity + "steg / dag, daglig blodtryckstagning: " + patient.dailybloodpressuretake + "ggr / dag";
+	if(patient.dailymedicinname != null)
+		- var patientPlan = patientPlan + ", Medicinering: " +  patient.dailymedicinname + " tas " + patient.dailymedicinamount + " ggr/dag"
+	
 	a.list-group-item(href='/patient/#{patient.fulname}')
 		h4.list-group-item-heading #{patient.name} #{patient.lastname} (#{patient.personnumber})
-		p.list-group-item-text Daglig aktivitet: #{patient.dailyactivity} steg / dag, daglig blodtryckstagning: #{patient.dailybloodpressuretake} ggr / dag
+		p.list-group-item-text= patientPlan
+			
 
 block content   
 	.row

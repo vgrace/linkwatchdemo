@@ -44,7 +44,9 @@
                     fulname: patientInfo.name.toUpperCase() + patientInfo.lastname.toUpperCase(),
                     personnumber: patientInfo.personnumber,
                     dailyactivity: patientInfo.dailyactivity,
-                    dailybloodpressuretake: patientInfo.dailybloodpressuretake
+                    dailybloodpressuretake: patientInfo.dailybloodpressuretake,
+                    dailymedicinname: patientInfo.dailymedicinname,
+                    dailymedicinamount: patientInfo.dailymedicinamount
                 };
 
                 db.patients.insert(fullPatient, function (err, patient) {
@@ -75,7 +77,9 @@
                             "lastname": patientUpdates.lastname,
                             "personnumber": patientUpdates.personnumber,
                             "dailyactivity": patientUpdates.dailyactivity,
-                            "dailybloodpressuretake": patientUpdates.dailybloodpressuretake
+                            "dailybloodpressuretake": patientUpdates.dailybloodpressuretake,
+                            "dailymedicinname": patientUpdates.dailymedicinname,
+                            "dailymedicinamount": patientUpdates.dailymedicinamount
                         },
                         
                     }, function (err, updatedPatient) {
